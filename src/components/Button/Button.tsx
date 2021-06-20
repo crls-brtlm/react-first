@@ -1,33 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+import { Button as MuiButton, ButtonProps } from "@material-ui/core";
 
-const StyledButton = styled.button`
-  background-color: #004b7b;
-  color: #fff;
-  font-size: 2rem;
-  font-weight: 700;
-`;
+const StyledButton = styled(MuiButton)``;
 
 interface IButtonProps {
   children: React.ReactNode;
   disabled?: boolean;
   onClick?: () => void;
-  color?: "green" | "red";
 }
 
-const Button = (props: IButtonProps) => {
-  const { disabled, onClick, color } = props;
+const Button = (
+  props: IButtonProps & Omit<ButtonProps, keyof IButtonProps>
+) => {
+  const { children, onClick, ...rest } = props;
 
   return (
-    <StyledButton
-      disabled={disabled}
-      onClick={onClick}
-      style={{
-        backgroundColor:
-          color === "green" ? "green" : color === "red" ? "red" : undefined,
-      }}
-    >
-      {props.children}
+    <StyledButton onClick={onClick} {...rest}>
+      {children}
     </StyledButton>
   );
 };

@@ -82,7 +82,12 @@ const Counter = (props: ICounterProps) => {
       <StyledCounterLabel>Contador</StyledCounterLabel>
       <StyledCounterActions>
         <StyledCounterDecButton>
-          <Button onClick={handleDecrement} disabled={state.value < 1}>
+          <Button
+            onClick={handleDecrement}
+            disabled={state.value < 1}
+            variant="outlined"
+            color="primary"
+          >
             Decrementar
           </Button>
         </StyledCounterDecButton>
@@ -90,11 +95,17 @@ const Counter = (props: ICounterProps) => {
           {state.value}
         </StyledCounterValue>
         <StyledCounterIncButton>
-          <Button onClick={handleIncrement}>Incrementar</Button>
+          <Button onClick={handleIncrement} variant="outlined" color="primary">
+            Incrementar
+          </Button>
         </StyledCounterIncButton>
       </StyledCounterActions>
       <StyledCounterBottomActions>
-        <Button onClick={toggleAutoIncrement}>
+        <Button
+          onClick={toggleAutoIncrement}
+          variant="contained"
+          color="secondary"
+        >
           {state.autoIncrement
             ? "Desactivar auto-incremento"
             : "Activar auto-incremento"}
