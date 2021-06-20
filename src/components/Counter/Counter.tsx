@@ -1,6 +1,40 @@
 import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 import Button from "../Button";
-import "./Counter.css";
+
+const StyledCounter = styled.div`
+  padding: 0.5rem;
+  background-color: #e7e7e7;
+  color: #333;
+`;
+
+const StyledCounterLabel = styled.div`
+  font-size: 1rem;
+  font-weight: 600;
+`;
+
+const StyledCounterActions = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+`;
+
+const StyledCounterValue = styled.div`
+  font-size: 1.25rem;
+  font-weight: 700;
+`;
+
+const StyledCounterIncButton = styled.div`
+  margin-left: 1rem;
+`;
+
+const StyledCounterDecButton = styled.div`
+  margin-right: 1rem;
+`;
+
+const StyledCounterBottomActions = styled.div``;
 
 interface ICounterProps {
   initialValue?: number;
@@ -44,29 +78,29 @@ const Counter = (props: ICounterProps) => {
   };
 
   return (
-    <div className="Counter">
-      <div className="Counter__label">Contador</div>
-      <div className="Counter__actions">
-        <div className="Counter__dec-button-wrapper">
+    <StyledCounter>
+      <StyledCounterLabel>Contador</StyledCounterLabel>
+      <StyledCounterActions>
+        <StyledCounterDecButton>
           <Button onClick={handleDecrement} disabled={state.value < 1}>
             Decrementar
           </Button>
-        </div>
-        <div className="Counter__value" data-testid="counter-value">
+        </StyledCounterDecButton>
+        <StyledCounterValue data-testid="counter-value">
           {state.value}
-        </div>
-        <div className="Counter__add-button-wrapper">
+        </StyledCounterValue>
+        <StyledCounterIncButton>
           <Button onClick={handleIncrement}>Incrementar</Button>
-        </div>
-      </div>
-      <div className="Counter__bottom-actions">
+        </StyledCounterIncButton>
+      </StyledCounterActions>
+      <StyledCounterBottomActions>
         <Button onClick={toggleAutoIncrement}>
           {state.autoIncrement
             ? "Desactivar auto-incremento"
             : "Activar auto-incremento"}
         </Button>
-      </div>
-    </div>
+      </StyledCounterBottomActions>
+    </StyledCounter>
   );
 };
 

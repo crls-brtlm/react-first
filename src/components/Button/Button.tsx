@@ -1,5 +1,12 @@
 import React from "react";
-import "./Button.css";
+import styled from "styled-components";
+
+const StyledButton = styled.button`
+  background-color: #004b7b;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+`;
 
 interface IButtonProps {
   children: React.ReactNode;
@@ -12,8 +19,7 @@ const Button = (props: IButtonProps) => {
   const { disabled, onClick, color } = props;
 
   return (
-    <button
-      className="Button"
+    <StyledButton
       disabled={disabled}
       onClick={onClick}
       style={{
@@ -22,7 +28,7 @@ const Button = (props: IButtonProps) => {
       }}
     >
       {props.children}
-    </button>
+    </StyledButton>
   );
 };
 
