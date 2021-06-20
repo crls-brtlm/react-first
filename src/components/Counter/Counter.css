@@ -1,0 +1,31 @@
+.Counter {
+  padding: 0.5rem;
+  background-color: #e7e7e7;
+  color: #333;
+}
+
+.Counter__label {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.Counter__actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.Counter__value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.Counter__add-button-wrapper {
+  margin-left: 1rem;
+}
+
+.Counter__dec-button-wrapper {
+  margin-right: 1rem;
+}
