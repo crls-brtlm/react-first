@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import "./Counter.css";
 
@@ -8,14 +8,39 @@ interface ICounterProps {
 
 const Counter = (props: ICounterProps) => {
   const { initialValue } = props;
-  const [state, setState] = useState({ value: initialValue ?? 0 });
+  const [state, setState] = useState({
+    value: initialValue ?? 0,
+    autoIncrement: false,
+  });
+  const intervalRef = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    if (state.autoIncrement) {
+      intervalRef.current = setInterval(() => {
+        setState((prevState) => ({ ...prevState, value: prevState.value + 1 }));
+      }, 1000);
+
+      return () => {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
+      };
+    }
+  }, [state.autoIncrement]);
 
   const handleIncrement = () => {
-    setState((prevState) => ({ value: prevState.value + 1 }));
+    setState((prevState) => ({ ...prevState, value: prevState.value + 1 }));
   };
 
   const handleDecrement = () => {
-    setState((prevState) => ({ value: prevState.value - 1 }));
+    setState((prevState) => ({ ...prevState, value: prevState.value - 1 }));
+  };
+
+  const toggleAutoIncrement = () => {
+    setState((prevState) => ({
+      ...prevState,
+      autoIncrement: !state.autoIncrement,
+    }));
   };
 
   return (
@@ -33,6 +58,13 @@ const Counter = (props: ICounterProps) => {
         <div className="Counter__add-button-wrapper">
           <Button onClick={handleIncrement}>Incrementar</Button>
         </div>
+      </div>
+      <div className="Counter__bottom-actions">
+        <Button onClick={toggleAutoIncrement}>
+          {state.autoIncrement
+            ? "Desactivar auto-incremento"
+            : "Activar auto-incremento"}
+        </Button>
       </div>
     </div>
   );
