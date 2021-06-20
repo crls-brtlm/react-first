@@ -16,7 +16,7 @@ describe("SideNav component", () => {
     fireEvent.click(iconButtonEleemnt);
     const menuElement = screen.getByText(/Menu/i);
     expect(menuElement).toBeInTheDocument();
-    const itemElement = screen.getByText(/Item 1/i);
+    const itemElement = screen.getByText(/Page 1/i);
     expect(itemElement).toBeInTheDocument();
   });
 });
