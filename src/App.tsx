@@ -16,6 +16,15 @@ import Page1 from "./pages/Page1";
 import Page2 from "./pages/Page2";
 import Page3 from "./pages/Page3";
 import MainPage from "./pages/MainPage";
+import { createStore } from "redux";
+import { counterReducer } from "./reducers/counterReducer";
+import { Provider } from "react-redux";
+
+const store = createStore(
+  counterReducer,
+  (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 const StyledMenuButtonWrapper = styled.div`
   position: absolute;
@@ -29,31 +38,33 @@ const StyledMenuButtonWrapper = styled.div`
 
 function App() {
   return (
-    <Router>
-      <StylesProvider injectFirst>
-        <MuiThemeProvider theme={muiTheme}>
-          <div className="App">
-            <StyledMenuButtonWrapper>
-              <SideNav />
-            </StyledMenuButtonWrapper>
-            <Switch>
-              <Route path={ROUTE_PAGE_1}>
-                <Page1 />
-              </Route>
-              <Route path={ROUTE_TODOS}>
-                <Page2 />
-              </Route>
-              <Route path={ROUTE_PAGE_3}>
-                <Page3 />
-              </Route>
-              <Route path={ROUTE_MAIN} exact>
-                <MainPage />
-              </Route>
-            </Switch>
-          </div>
-        </MuiThemeProvider>
-      </StylesProvider>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <StylesProvider injectFirst>
+          <MuiThemeProvider theme={muiTheme}>
+            <div className="App">
+              <StyledMenuButtonWrapper>
+                <SideNav />
+              </StyledMenuButtonWrapper>
+              <Switch>
+                <Route path={ROUTE_PAGE_1}>
+                  <Page1 />
+                </Route>
+                <Route path={ROUTE_TODOS}>
+                  <Page2 />
+                </Route>
+                <Route path={ROUTE_PAGE_3}>
+                  <Page3 />
+                </Route>
+                <Route path={ROUTE_MAIN} exact>
+                  <MainPage />
+                </Route>
+              </Switch>
+            </div>
+          </MuiThemeProvider>
+        </StylesProvider>
+      </Router>
+    </Provider>
   );
 }
 

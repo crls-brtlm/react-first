@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import {
+  decrementCounter,
+  incrementCounter,
+} from "../../actions/counterActions";
+import { TRootState } from "../../reducers/counterReducer";
 import Button from "../Button";
 
 const StyledCounter = styled.div`
@@ -36,38 +42,36 @@ const StyledCounterDecButton = styled.div`
 
 const StyledCounterBottomActions = styled.div``;
 
-interface ICounterProps {
-  initialValue?: number;
-}
+interface ICounterProps {}
 
 const Counter = (props: ICounterProps) => {
-  const { initialValue } = props;
+  const counterValue = useSelector((state: TRootState) => state);
+  const dispatch = useDispatch();
   const [state, setState] = useState({
-    value: initialValue ?? 0,
     autoIncrement: false,
   });
+
   const intervalRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     if (state.autoIncrement) {
       intervalRef.current = setInterval(() => {
-        setState((prevState) => ({ ...prevState, value: prevState.value + 1 }));
+        dispatch(incrementCounter());
       }, 1000);
-
       return () => {
         if (intervalRef.current) {
           clearInterval(intervalRef.current);
         }
       };
     }
-  }, [state.autoIncrement]);
+  }, [dispatch, state.autoIncrement]);
 
   const handleIncrement = () => {
-    setState((prevState) => ({ ...prevState, value: prevState.value + 1 }));
+    dispatch(incrementCounter());
   };
 
   const handleDecrement = () => {
-    setState((prevState) => ({ ...prevState, value: prevState.value - 1 }));
+    dispatch(decrementCounter());
   };
 
   const toggleAutoIncrement = () => {
@@ -84,7 +88,7 @@ const Counter = (props: ICounterProps) => {
         <StyledCounterDecButton>
           <Button
             onClick={handleDecrement}
-            disabled={state.value < 1}
+            disabled={counterValue < 1}
             variant="outlined"
             color="primary"
           >
@@ -92,7 +96,7 @@ const Counter = (props: ICounterProps) => {
           </Button>
         </StyledCounterDecButton>
         <StyledCounterValue data-testid="counter-value">
-          {state.value}
+          {counterValue}
         </StyledCounterValue>
         <StyledCounterIncButton>
           <Button onClick={handleIncrement} variant="outlined" color="primary">

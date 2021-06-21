@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import React, { Fragment, useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -16,6 +17,7 @@ import {
   ROUTE_PAGE_3,
   ROUTE_TODOS,
 } from "../../constants/routes";
+import { TRootState } from "../../reducers/counterReducer";
 
 const StyledTypography = styled(Typography)`
   padding: 1rem;
@@ -27,9 +29,23 @@ const StyledListItem = styled(ListItem)`
   min-width: 10rem;
 `;
 
+const StyledDrawerContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+`;
+
+const StyledTop = styled.div``;
+
+const StyledBottom = styled.div`
+  padding: 1rem;
+`;
+
 interface ISideNavProps {}
 
 const SideNav = (props: ISideNavProps) => {
+  const counterValue = useSelector((state: TRootState) => state);
   const [state, setState] = useState({
     open: false,
   });
@@ -65,22 +81,27 @@ const SideNav = (props: ISideNavProps) => {
         onEscapeKeyDown={handleCloseNav}
         onClose={handleCloseNav}
       >
-        <List>
-          <StyledTypography>Menu</StyledTypography>
-          <StyledListItem button onClick={handleClickPage1}>
-            <ListItemText>Page 1</ListItemText>
-          </StyledListItem>
-          <StyledListItem button onClick={handleClickTodosPage}>
-            <ListItemText>TodosPage</ListItemText>
-          </StyledListItem>
-          <StyledListItem button onClick={handleClickPage3}>
-            <ListItemText>Page 3</ListItemText>
-          </StyledListItem>
-          <Divider />
-          <StyledListItem button onClick={handleCloseNav}>
-            <ListItemText>Close</ListItemText>
-          </StyledListItem>
-        </List>
+        <StyledDrawerContent>
+          <StyledTop>
+            <List>
+              <StyledTypography>Menu</StyledTypography>
+              <StyledListItem button onClick={handleClickPage1}>
+                <ListItemText>Page 1</ListItemText>
+              </StyledListItem>
+              <StyledListItem button onClick={handleClickTodosPage}>
+                <ListItemText>TodosPage</ListItemText>
+              </StyledListItem>
+              <StyledListItem button onClick={handleClickPage3}>
+                <ListItemText>Page 3</ListItemText>
+              </StyledListItem>
+              <Divider />
+              <StyledListItem button onClick={handleCloseNav}>
+                <ListItemText>Close</ListItemText>
+              </StyledListItem>
+            </List>
+          </StyledTop>
+          <StyledBottom>Counter is: {counterValue}</StyledBottom>
+        </StyledDrawerContent>
       </Drawer>
     </Fragment>
   );

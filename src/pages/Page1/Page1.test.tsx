@@ -1,12 +1,13 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
-import Page1 from "./Page1";
 import { Router } from "react-router-dom";
+import { renderWithStore } from "../../test-utils";
+import Page1 from "./Page1";
 
 describe("Page1 page", () => {
   it("renders MainPage", () => {
     const history = createMemoryHistory();
-    render(
+    renderWithStore(
       <Router history={history}>
         <Page1 />
       </Router>

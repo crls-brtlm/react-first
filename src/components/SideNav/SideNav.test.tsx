@@ -1,15 +1,16 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { renderWithStore } from "../../test-utils";
 import SideNav from "./SideNav";
 
 describe("SideNav component", () => {
   it("renders menu button", () => {
-    render(<SideNav />);
+    renderWithStore(<SideNav />);
     const iconButtonEleemnt = screen.getByTestId(/menu-button/i);
     expect(iconButtonEleemnt).toBeInTheDocument();
   });
 
   it("opens side nav when clicked", () => {
-    render(<SideNav />);
+    renderWithStore(<SideNav />);
     const iconButtonEleemnt = screen.getByTestId(/menu-button/i);
     expect(iconButtonEleemnt).toBeInTheDocument();
 
