@@ -13,8 +13,8 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import {
   ROUTE_PAGE_1,
-  ROUTE_PAGE_2,
   ROUTE_PAGE_3,
+  ROUTE_TODOS,
 } from "../../constants/routes";
 
 const StyledTypography = styled(Typography)`
@@ -47,8 +47,8 @@ const SideNav = (props: ISideNavProps) => {
     history.push(ROUTE_PAGE_1);
   };
 
-  const handleClickPage2 = () => {
-    history.push(ROUTE_PAGE_2);
+  const handleClickTodosPage = () => {
+    history.push(ROUTE_TODOS);
   };
 
   const handleClickPage3 = () => {
@@ -70,8 +70,8 @@ const SideNav = (props: ISideNavProps) => {
           <StyledListItem button onClick={handleClickPage1}>
             <ListItemText>Page 1</ListItemText>
           </StyledListItem>
-          <StyledListItem button onClick={handleClickPage2}>
-            <ListItemText>Page 2</ListItemText>
+          <StyledListItem button onClick={handleClickTodosPage}>
+            <ListItemText>TodosPage</ListItemText>
           </StyledListItem>
           <StyledListItem button onClick={handleClickPage3}>
             <ListItemText>Page 3</ListItemText>

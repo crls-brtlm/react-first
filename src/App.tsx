@@ -9,8 +9,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {
   ROUTE_MAIN,
   ROUTE_PAGE_1,
-  ROUTE_PAGE_2,
   ROUTE_PAGE_3,
+  ROUTE_TODOS,
 } from "./constants/routes";
 import Page1 from "./pages/Page1";
 import Page2 from "./pages/Page2";
@@ -40,7 +40,7 @@ function App() {
               <Route path={ROUTE_PAGE_1}>
                 <Page1 />
               </Route>
-              <Route path={ROUTE_PAGE_2}>
+              <Route path={ROUTE_TODOS}>
                 <Page2 />
               </Route>
               <Route path={ROUTE_PAGE_3}>
