@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
+  activateAutoIncrementCounter,
+  deactivateAutoIncrementCounter,
   decrementCounter,
   incrementCounter,
 } from "../../actions/counterActions";
-import { TRootState } from "../../reducers/counterReducer";
+import { TRootState } from "../../reducers";
 import Button from "../Button";
 
 const StyledCounter = styled.div`
@@ -45,26 +47,13 @@ const StyledCounterBottomActions = styled.div``;
 interface ICounterProps {}
 
 const Counter = (props: ICounterProps) => {
-  const counterValue = useSelector((state: TRootState) => state);
+  const counterValue = useSelector(
+    (state: TRootState) => state.counter.counterValue
+  );
+  const autoIncrement = useSelector(
+    (state: TRootState) => state.counter.autoIncrement
+  );
   const dispatch = useDispatch();
-  const [state, setState] = useState({
-    autoIncrement: false,
-  });
-
-  const intervalRef = useRef<NodeJS.Timeout>();
-
-  useEffect(() => {
-    if (state.autoIncrement) {
-      intervalRef.current = setInterval(() => {
-        dispatch(incrementCounter());
-      }, 1000);
-      return () => {
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-        }
-      };
-    }
-  }, [dispatch, state.autoIncrement]);
 
   const handleIncrement = () => {
     dispatch(incrementCounter());
@@ -75,10 +64,11 @@ const Counter = (props: ICounterProps) => {
   };
 
   const toggleAutoIncrement = () => {
-    setState((prevState) => ({
-      ...prevState,
-      autoIncrement: !state.autoIncrement,
-    }));
+    if (autoIncrement) {
+      dispatch(deactivateAutoIncrementCounter());
+    } else {
+      dispatch(activateAutoIncrementCounter());
+    }
   };
 
   return (
@@ -110,7 +100,7 @@ const Counter = (props: ICounterProps) => {
           variant="contained"
           color="secondary"
         >
-          {state.autoIncrement
+          {autoIncrement
             ? "Desactivar auto-incremento"
             : "Activar auto-incremento"}
         </Button>

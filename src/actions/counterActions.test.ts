@@ -15,4 +15,18 @@ describe("counter actions", () => {
     };
     expect(actions.decrementCounter()).toEqual(expectedAction);
   });
+
+  it("sould create an action to activate auto-increment", () => {
+    const expectedAction = {
+      type: types.COUNTER_ACTION_ACTIVATE_AUTOINCREMENT,
+    };
+    expect(actions.activateAutoIncrementCounter()).toEqual(expectedAction);
+  });
+
+  it("sould create an action to de-activate auto-increment", () => {
+    const expectedAction = {
+      type: types.COUNTER_ACTION_DEACTIVATE_AUTOINCREMENT,
+    };
+    expect(actions.deactivateAutoIncrementCounter()).toEqual(expectedAction);
+  });
 });

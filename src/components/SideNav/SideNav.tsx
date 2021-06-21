@@ -17,7 +17,7 @@ import {
   ROUTE_PAGE_3,
   ROUTE_TODOS,
 } from "../../constants/routes";
-import { TRootState } from "../../reducers/counterReducer";
+import { TRootState } from "../../reducers";
 
 const StyledTypography = styled(Typography)`
   padding: 1rem;
@@ -45,7 +45,9 @@ const StyledBottom = styled.div`
 interface ISideNavProps {}
 
 const SideNav = (props: ISideNavProps) => {
-  const counterValue = useSelector((state: TRootState) => state);
+  const counterValue = useSelector(
+    (state: TRootState) => state.counter.counterValue
+  );
   const [state, setState] = useState({
     open: false,
   });

@@ -1,54 +1,22 @@
-import React, { useState } from "react";
-import { useCallback } from "react";
-import { useEffect } from "react";
-import { ITodoResponse } from "../../api/todo/apiGetTodo";
-import { apiListTodos } from "../../api/todo/apiListTodos";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTodos } from "../../actions/todoActions";
+import { TRootState } from "../../reducers";
 import TodosPage from "./TodosPage";
 
 interface ITodosPageContainerProps {}
 
 const TodosPageContainer = (props: ITodosPageContainerProps) => {
-  const [state, setState] = useState<{
-    todos: ITodoResponse[];
-    isLoading: boolean;
-    isError: boolean;
-  }>({
-    todos: [],
-    isLoading: false,
-    isError: false,
-  });
-
-  const fetchTodos = useCallback(async () => {
-    setState((prevState) => ({ ...prevState, isLoading: true }));
-
-    try {
-      let todos = await apiListTodos();
-
-      setState((prevState) => ({
-        ...prevState,
-        todos: todos,
-        isLoading: false,
-      }));
-    } catch (e) {
-      setState((prevState) => ({
-        ...prevState,
-        isLoading: false,
-        isError: true,
-      }));
-    }
-  }, []);
+  const todos = useSelector((state: TRootState) => state.todo.todos);
+  const isLoading = useSelector((state: TRootState) => state.todo.isLoading);
+  const isError = useSelector((state: TRootState) => state.todo.isError);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchTodos();
-  }, [fetchTodos]);
+    dispatch(fetchTodos());
+  }, [dispatch]);
 
-  return (
-    <TodosPage
-      todos={state.todos}
-      isLoading={state.isLoading}
-      isError={state.isError}
-    />
-  );
+  return <TodosPage todos={todos} isLoading={isLoading} isError={isError} />;
 };
 
 export default TodosPageContainer;

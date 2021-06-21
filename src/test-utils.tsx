@@ -1,14 +1,14 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import { counterReducer } from "./reducers/counterReducer";
+import { configureStore } from "./configureStore";
+import { runSaga } from "redux-saga";
 
-function renderWithStore(
+export function renderWithStore(
   ui: React.ReactElement<any, string | React.JSXElementConstructor<any>>,
   {
     initialState,
-    store = createStore(counterReducer, initialState),
+    store = configureStore(),
     ...renderOptions
   }: {
     initialState?: any;
@@ -22,4 +22,18 @@ function renderWithStore(
   return render(ui, { wrapper: Wrapper, ...renderOptions });
 }
 
-export { renderWithStore };
+export async function recordSaga(saga: any, initialAction: any) {
+  const dispatched: any[] = [];
+
+  await (
+    runSaga(
+      {
+        dispatch: (action) => dispatched.push(action),
+      },
+      saga,
+      initialAction
+    ) as any
+  ).done;
+
+  return dispatched;
+}

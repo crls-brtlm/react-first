@@ -1,30 +1,25 @@
 import { MuiThemeProvider } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/styles";
 import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import "./App.css";
 import SideNav from "./components/SideNav";
-import { muiTheme } from "./containers/muiTheme";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { configureStore } from "./configureStore";
 import {
   ROUTE_MAIN,
   ROUTE_PAGE_1,
   ROUTE_PAGE_3,
   ROUTE_TODOS,
 } from "./constants/routes";
+import { muiTheme } from "./containers/muiTheme";
+import MainPage from "./pages/MainPage";
 import Page1 from "./pages/Page1";
 import Page2 from "./pages/Page2";
 import Page3 from "./pages/Page3";
-import MainPage from "./pages/MainPage";
-import { createStore } from "redux";
-import { counterReducer } from "./reducers/counterReducer";
-import { Provider } from "react-redux";
 
-const store = createStore(
-  counterReducer,
-  (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
-    (window as any).__REDUX_DEVTOOLS_EXTENSION__()
-);
+const store = configureStore();
 
 const StyledMenuButtonWrapper = styled.div`
   position: absolute;
