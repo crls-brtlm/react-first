@@ -1,0 +1,3 @@
+export const CHAT_CONNECT = "CHAT_CONNECT";
+export const CHAT_UPDATE_USERS = "CHAT_UPDATE_USERS";
+export const CHAT_MESSAGE = "CHAT MESSAGE";

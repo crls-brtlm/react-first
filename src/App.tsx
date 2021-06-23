@@ -1,6 +1,6 @@
 import { MuiThemeProvider } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/styles";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
@@ -8,6 +8,7 @@ import "./App.css";
 import SideNav from "./components/SideNav";
 import { configureStore } from "./configureStore";
 import {
+  ROUTE_CHAT,
   ROUTE_MAIN,
   ROUTE_PAGE_1,
   ROUTE_PAGE_3,
@@ -18,6 +19,7 @@ import MainPage from "./pages/MainPage";
 import Page1 from "./pages/Page1";
 import Page2 from "./pages/Page2";
 import Page3 from "./pages/Page3";
+import ChatPage from "./pages/ChatPage";
 
 const store = configureStore();
 
@@ -50,6 +52,9 @@ function App() {
                 </Route>
                 <Route path={ROUTE_PAGE_3}>
                   <Page3 />
+                </Route>
+                <Route path={ROUTE_CHAT}>
+                  <ChatPage />
                 </Route>
                 <Route path={ROUTE_MAIN} exact>
                   <MainPage />

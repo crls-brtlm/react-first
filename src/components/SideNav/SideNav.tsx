@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import {
+  ROUTE_CHAT,
   ROUTE_PAGE_1,
   ROUTE_PAGE_3,
   ROUTE_TODOS,
@@ -73,6 +74,10 @@ const SideNav = (props: ISideNavProps) => {
     history.push(ROUTE_PAGE_3);
   };
 
+  const handleClickChatPage = () => {
+    history.push(ROUTE_CHAT);
+  };
+
   return (
     <Fragment>
       <IconButton onClick={handleOpenNav} data-testid="menu-button">
@@ -95,6 +100,9 @@ const SideNav = (props: ISideNavProps) => {
               </StyledListItem>
               <StyledListItem button onClick={handleClickPage3}>
                 <ListItemText>Page 3</ListItemText>
+              </StyledListItem>
+              <StyledListItem button onClick={handleClickChatPage}>
+                <ListItemText>Chat</ListItemText>
               </StyledListItem>
               <Divider />
               <StyledListItem button onClick={handleCloseNav}>
