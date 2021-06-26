@@ -11,15 +11,22 @@ import {
   ROUTE_MAIN,
   ROUTE_PAGE_1,
   ROUTE_PAGE_3,
+  ROUTE_POSTS_PAGE,
+  ROUTE_POST_PAGE,
   ROUTE_TODOS,
 } from "./constants/routes";
 import { muiTheme } from "./containers/muiTheme";
 import MainPage from "./pages/MainPage";
 import Page1 from "./pages/Page1";
-import Page2 from "./pages/Page2";
+import Page2 from "./pages/TodosPage";
 import Page3 from "./pages/Page3";
+import PostsPage from "./pages/PostsPage";
+import PostPage from "./pages/PostPage";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const store = configureStore();
+
+const queryClient = new QueryClient();
 
 const StyledMenuButtonWrapper = styled.div`
   position: absolute;
@@ -34,31 +41,39 @@ const StyledMenuButtonWrapper = styled.div`
 function App() {
   return (
     <Provider store={store}>
-      <Router>
-        <StylesProvider injectFirst>
-          <MuiThemeProvider theme={muiTheme}>
-            <div className="App">
-              <StyledMenuButtonWrapper>
-                <SideNav />
-              </StyledMenuButtonWrapper>
-              <Switch>
-                <Route path={ROUTE_PAGE_1}>
-                  <Page1 />
-                </Route>
-                <Route path={ROUTE_TODOS}>
-                  <Page2 />
-                </Route>
-                <Route path={ROUTE_PAGE_3}>
-                  <Page3 />
-                </Route>
-                <Route path={ROUTE_MAIN} exact>
-                  <MainPage />
-                </Route>
-              </Switch>
-            </div>
-          </MuiThemeProvider>
-        </StylesProvider>
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <StylesProvider injectFirst>
+            <MuiThemeProvider theme={muiTheme}>
+              <div className="App">
+                <StyledMenuButtonWrapper>
+                  <SideNav />
+                </StyledMenuButtonWrapper>
+                <Switch>
+                  <Route path={ROUTE_PAGE_1}>
+                    <Page1 />
+                  </Route>
+                  <Route path={ROUTE_TODOS}>
+                    <Page2 />
+                  </Route>
+                  <Route path={ROUTE_PAGE_3}>
+                    <Page3 />
+                  </Route>
+                  <Route path={ROUTE_POST_PAGE}>
+                    <PostPage />
+                  </Route>
+                  <Route path={ROUTE_POSTS_PAGE}>
+                    <PostsPage />
+                  </Route>
+                  <Route path={ROUTE_MAIN} exact>
+                    <MainPage />
+                  </Route>
+                </Switch>
+              </div>
+            </MuiThemeProvider>
+          </StylesProvider>
+        </Router>
+      </QueryClientProvider>
     </Provider>
   );
 }

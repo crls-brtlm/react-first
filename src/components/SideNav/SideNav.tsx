@@ -15,6 +15,7 @@ import styled from "styled-components";
 import {
   ROUTE_PAGE_1,
   ROUTE_PAGE_3,
+  ROUTE_POSTS_PAGE,
   ROUTE_TODOS,
 } from "../../constants/routes";
 import { TRootState } from "../../reducers";
@@ -73,6 +74,10 @@ const SideNav = (props: ISideNavProps) => {
     history.push(ROUTE_PAGE_3);
   };
 
+  const handleClickPostsPage = () => {
+    history.push(ROUTE_POSTS_PAGE);
+  };
+
   return (
     <Fragment>
       <IconButton onClick={handleOpenNav} data-testid="menu-button">
@@ -95,6 +100,9 @@ const SideNav = (props: ISideNavProps) => {
               </StyledListItem>
               <StyledListItem button onClick={handleClickPage3}>
                 <ListItemText>Page 3</ListItemText>
+              </StyledListItem>
+              <StyledListItem button onClick={handleClickPostsPage}>
+                <ListItemText>Posts</ListItemText>
               </StyledListItem>
               <Divider />
               <StyledListItem button onClick={handleCloseNav}>
