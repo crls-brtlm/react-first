@@ -1,8 +1,10 @@
+import { IconButton, InputBase } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { TMessage } from "../../reducers/chatReducer";
+import { TMessage, TUser } from "../../reducers/chatReducer";
 import ConversationMessage from "./ConversationMessage";
+import SendIcon from "@material-ui/icons/Send";
 
 const StyledWrapper = styled.div`
   height: 100%;
@@ -13,12 +15,16 @@ const StyledWrapper = styled.div`
 const StyledMessageWrapper = styled.div``;
 
 const StyledConversationData = styled.div`
-  background-color: #ededed;
-  height: 4rem;
-  padding: 0.5rem 1rem;
+  background-color: #005e54;
+  color: #fff;
+  height: 3rem;
+  padding: 0.25rem 1rem 0.25rem 4rem;
+  text-align: left;
 `;
 
-const StyledConversationContainerWrapper = styled.div``;
+const StyledConversationDataNumUsers = styled(Typography)``;
+
+const StyledConversationDataUsers = styled(Typography)``;
 
 const StyledConversationContainer = styled.div`
   flex: 1 1 auto;
@@ -41,10 +47,6 @@ const StyledConversationContainer = styled.div`
   }
 `;
 
-const StyledEmployeeCrmName = styled(Typography)``;
-
-const StyledEmployeeFullName = styled(Typography)``;
-
 const StyledNoResultsWrapper = styled.div`
   height: 100%;
   display: flex;
@@ -54,12 +56,6 @@ const StyledNoResultsWrapper = styled.div`
 
 const StyledNoResults = styled.div``;
 
-const StyledNoResultsImage = styled.img`
-  text-align: center;
-  margin: 0 auto;
-  display: block;
-`;
-
 const StyledNoResultsText = styled(Typography)`
   line-height: 1.35;
   text-align: center;
@@ -68,20 +64,25 @@ const StyledNoResultsText = styled(Typography)`
   color: #004b7b;
 `;
 
+const StyledInputWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.25rem 1rem 0.25rem 4rem;
+`;
+
 interface IConversationProps {
-  employee?: {
-    id: string;
-    crmName: string;
-    fullName: string;
-  };
   messages: TMessage[];
+  users: TUser[];
+  onSendMessage: (message: string) => void;
 }
 
 const Conversation = (props: IConversationProps) => {
-  const { messages } = props;
+  const { messages, users, onSendMessage } = props;
   const bottomRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState({
     hasScrolledAtStart: false,
+    message: "",
   });
 
   useEffect(() => {
@@ -98,19 +99,41 @@ const Conversation = (props: IConversationProps) => {
     }
   }, [state.hasScrolledAtStart, messages]);
 
+  const handleMessageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setState((prevState) => ({
+      ...prevState,
+      message: e.target.value,
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSendMessage(state.message);
+    setState((prevState) => ({
+      ...prevState,
+      message: "",
+    }));
+  };
+
+  let tempUserNames = "";
+  users.forEach((user) => (tempUserNames = tempUserNames + user.name + ", "));
+  const regex = /,\s$/g;
+  const userNames = tempUserNames.replace(regex, "");
+
   return (
     <StyledWrapper>
-      {/* {employee && (
+      {!!(users.length > 0) && (
         <StyledConversationData>
-          <StyledEmployeeCrmName>{employee.crmName}</StyledEmployeeCrmName>
-          <StyledEmployeeFullName>{employee.fullName}</StyledEmployeeFullName>
+          <StyledConversationDataNumUsers>
+            Usuarios: {users.length}
+          </StyledConversationDataNumUsers>
+          <StyledConversationDataUsers>{userNames}</StyledConversationDataUsers>
         </StyledConversationData>
-      )} */}
+      )}
       <StyledConversationContainer>
         {messages && !!(messages.length === 0) && (
           <StyledNoResultsWrapper>
             <StyledNoResults>
-              {/* <StyledNoResultsImage src={MessagesPng} /> */}
               <StyledNoResultsText>No hay mensajes</StyledNoResultsText>
             </StyledNoResults>
           </StyledNoResultsWrapper>
@@ -124,6 +147,19 @@ const Conversation = (props: IConversationProps) => {
           ))}
         <div ref={bottomRef} />
       </StyledConversationContainer>
+      <form onSubmit={handleSubmit}>
+        <StyledInputWrapper>
+          <InputBase
+            value={state.message}
+            onChange={handleMessageChange}
+            placeholder="Escribe aqui un mensaje"
+            fullWidth
+          />
+          <IconButton type="submit">
+            <SendIcon />
+          </IconButton>
+        </StyledInputWrapper>
+      </form>
     </StyledWrapper>
   );
 };

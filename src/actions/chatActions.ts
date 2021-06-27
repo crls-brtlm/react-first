@@ -23,7 +23,7 @@ export const chatUpdateUsers = (users: TUser[]) => {
   };
 };
 
-export const chatMessage = (message: TMessage[]) => {
+export const chatMessage = (message: TMessage) => {
   return {
     type: CHAT_MESSAGE,
     payload: {

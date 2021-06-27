@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import Conversation from "../../components/Conversation";
-import socketIOClient from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { TRootState } from "../../reducers";
 import {
@@ -13,9 +12,9 @@ import {
 } from "@material-ui/core";
 import { DialogActions } from "@material-ui/core";
 import { useState } from "react";
-import { chatConnect } from "../../actions/chatActions";
-
-const ENDPOINT = "http://localhost:4001";
+import { chatConnect, chatMessage } from "../../actions/chatActions";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 const StyledPage = styled.div`
   background-color: #e4e7e9;
@@ -40,57 +39,63 @@ const ChatPage = (props: IChatPageProps) => {
     name: "",
   });
 
-  useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-    socket.on("users_connected", (data) => {
-      console.log("Data: ", data);
-    });
-
-    console.log("Emmiting");
-    socket.emit("user_connect", {
-      id: "3239293",
-      name: "Carlos",
-      status: "idle",
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState((prevState) => ({ ...prevState, name: e.target.value }));
   };
 
-  const handleConnect = () => {
+  const handleConnect = (e: any) => {
+    e.preventDefault();
     dispatch(
       chatConnect({
-        id: "223332",
+        id: uuidv4(),
         name: state.name,
         status: "idle",
       })
     );
   };
 
+  const handleSendMessage = (message: string) => {
+    if (connectedUser) {
+      dispatch(
+        chatMessage({
+          id: uuidv4(),
+          content: message,
+          sentOn: moment().format(),
+          direction: "sent",
+          author: {
+            id: connectedUser.id,
+            name: connectedUser.name,
+          },
+        })
+      );
+    }
+  };
+
   return (
     <StyledPage>
-      <Conversation messages={messages} />
+      <Conversation
+        messages={messages}
+        users={users}
+        onSendMessage={handleSendMessage}
+      />
       <StyledDialog open={!connectedUser}>
-        <DialogTitle>Conectar</DialogTitle>
-        <DialogContent>
-          <TextField
-            variant="outlined"
-            value={state.name}
-            type="text"
-            onChange={handleNameChange}
-            label="Nombre"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" color="primary" onClick={handleConnect}>
-            Aceptar
-          </Button>
-        </DialogActions>
+        <form noValidate onSubmit={handleConnect}>
+          <DialogTitle>Conectar</DialogTitle>
+          <DialogContent>
+            <TextField
+              variant="outlined"
+              value={state.name}
+              type="text"
+              onChange={handleNameChange}
+              label="Nombre"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" color="primary" type="submit">
+              Aceptar
+            </Button>
+          </DialogActions>
+        </form>
       </StyledDialog>
     </StyledPage>
   );

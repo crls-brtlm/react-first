@@ -14,7 +14,7 @@ export type TMessage = {
   id: string;
   content: string;
   sentOn: string;
-  direction: "received" | "sent";
+  direction: "received" | "sent" | "event";
   author: {
     id: string;
     name: string;
@@ -27,25 +27,30 @@ export type TChatState = {
   messages: TMessage[];
 };
 
+export type TChatActionConnect = {
+  type: typeof CHAT_CONNECT;
+  payload: {
+    user: TUser;
+  };
+};
+
+export type TChatActionUpdateUsers = {
+  type: typeof CHAT_UPDATE_USERS;
+  payload: {
+    users: TUser[];
+  };
+};
+
+export type TChatActionMessage = {
+  type: typeof CHAT_MESSAGE;
+  payload: {
+    message: TMessage;
+  };
+};
 export type TChatAction =
-  | {
-      type: typeof CHAT_CONNECT;
-      payload: {
-        user: TUser;
-      };
-    }
-  | {
-      type: typeof CHAT_UPDATE_USERS;
-      payload: {
-        users: TUser[];
-      };
-    }
-  | {
-      type: typeof CHAT_MESSAGE;
-      payload: {
-        message: TMessage;
-      };
-    };
+  | TChatActionConnect
+  | TChatActionUpdateUsers
+  | TChatActionMessage;
 
 const initialState: TChatState = {
   connectedUser: null,
@@ -58,6 +63,21 @@ function chatReducer(
   action: TChatAction
 ): TChatState {
   switch (action.type) {
+    case CHAT_CONNECT:
+      return {
+        ...state,
+        connectedUser: action.payload.user,
+      };
+    case CHAT_UPDATE_USERS:
+      return {
+        ...state,
+        users: action.payload.users,
+      };
+    case CHAT_MESSAGE:
+      return {
+        ...state,
+        messages: [...state.messages, action.payload.message],
+      };
     default:
       return state;
   }
